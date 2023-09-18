@@ -6,7 +6,7 @@ void calc_forces(){
     
     //CALC EDGE LENGTHS
     for(int i = 1; i <= Ne; i++){
-        if(LENGTH0==-1 && e_type[i]==2) LENGTH0 = edge_Length(i); // set resting spring lenght to something realistic
+        if(LENGTH0==-1 && e_type[i]==2) LENGTH0 = edge_Length(i); // set resting spring length to something realistic
         e_length[i]=edge_Length(i);
     }
     
@@ -32,11 +32,20 @@ void calc_forces(){
     
 }
 //****************************************************************************
+//definethe structure for energy saving
+typedef struct OutputNode {
+    double Time, wA, wL, wH, totalW, max_move;
+    struct OutputNode* next;
+} OutputNode;
+
+OutputNode* head = NULL;
+OutputNode* tail = NULL;
+//****************************************************************************
 double integration_step(int printout){
     
     //CALCULATE FORCES
     calc_forces();
-    
+
     //EQUATION OF MOTION
     for(int i = 1; i <= Nv; i++){
         
@@ -62,9 +71,24 @@ double integration_step(int printout){
     
     //OUTPUT
     if(printout==true) printf("%g \t\t wA=%.20g \t\t wL=%.20g \t\t wH=%.20g \t\t w=%.20g \t\t %g\n", Time, wA, wL, wH, wA+wL+wH, max_move);
-    //APPEND ENERGIES FOR SAVING
-    append_energies();
-    
+    //APPEND ENERGIES TO LINKED LIST
+    if(SAVE_ALL == true || Time >= TOTAL_TIME-dt) {
+        OutputNode *newNode = (OutputNode *) malloc(sizeof(OutputNode));
+        newNode->Time = Time;
+        newNode->wA = wA;
+        newNode->wL = wL;
+        newNode->wH = wH;
+        newNode->totalW = wA + wL + wH;
+        newNode->max_move = max_move;
+        newNode->next = NULL;
+
+        if (tail) {
+            tail->next = newNode;
+            tail = newNode;
+        } else {
+            head = tail = newNode;
+        }
+    }
     //t=t+dt
     Time+=dt;
     

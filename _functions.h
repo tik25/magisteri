@@ -11,6 +11,14 @@
 #define PBSTR "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
 #define PBWIDTH 60
 
+#include <string.h>
+#include <sys/stat.h>
+#ifdef _WIN32
+#include <direct.h>  // Windows
+#else
+#include <unistd.h>  // For Unix
+#include <sys/types.h>
+#endif
 //GEOMETRIC ELEMENTS
 int Nv, Ne, Nc;
 double **v;
@@ -40,6 +48,9 @@ int kount=0;
 double time0=0;
 double lthBM=0.005;
 int array_max=10000;
+
+char filePath[50];
+char OUTDIR[50];//current run dir
 //****************************************************************************
 //****************************************************************************
 //****************************************************************************

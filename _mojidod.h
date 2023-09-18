@@ -10,7 +10,8 @@ struct Point {
 // Function to calculate middle points of vertical cell sides and save
 void calc_midpoints() {
     // Create an output file stream
-    std::ofstream outputFile("output/midpoints.txt");
+    sprintf(filePath, "%s/midpoints.txt", OUTDIR);
+    std::ofstream outputFile(filePath);
 
     // Loop through the cells and calculate midpoints
     for (int i = 1; i <= Nc; i++) {
@@ -31,7 +32,8 @@ void calc_midpoints() {
 
 void save_metadata(){
     // Open a file for writing
-    FILE *file = fopen("variables.csv", "w");
+    sprintf(filePath, "%s/variables.csv", OUTDIR);
+    FILE *file = fopen(filePath, "w");
 
     // Save the variables to CSV
     fprintf(file, "Variable,Value\n");
@@ -49,41 +51,9 @@ void save_metadata(){
 }
 
 /**************************saving energies*****************************/
-
-//definethe structure
-void make_struct(){
-    typedef struct OutputNode {
-        double Time, wA, wL, wH, totalW, max_move;
-        struct OutputNode* next;
-    } OutputNode;
-
-    OutputNode* head = NULL;
-    OutputNode* tail = NULL;
-}
-
-// Append to linked list instead of printing
-void append_energies(){
-    OutputNode* newNode = malloc(sizeof(OutputNode));
-
-    newNode->Time = Time;
-    newNode->wA = wA;
-    newNode->wL = wL;
-    newNode->wH = wH;
-    newNode->totalW = wA + wL;
-    newNode->max_move = max_move;
-    newNode->next = NULL;
-
-    if (tail) {
-        tail->next = newNode;
-        tail = newNode;
-    } else {
-        head = tail = newNode;
-    }
-}
-
-
 void save_energies() {
-    FILE* fp = fopen("energy.txt", "w");
+    sprintf(filePath, "%s/energy.txt", OUTDIR);
+    FILE* fp = fopen(filePath, "w");
     //header
     fprintf(fp, "Time\twA\twL\twH\tw\tmax_move\n");
 
@@ -100,6 +70,48 @@ void save_energies() {
     fclose(fp);
 }
 
+void directory_setup(){
+    //make a new directory for the current run using timestamp
+    time_t t;
+    struct tm *tmp;
+    char runDirName[50];
+    t = time(NULL);
+    tmp = localtime(&t);
+    //just in case
+    if (tmp == NULL) {
+        perror("localtime");
+        exit(EXIT_FAILURE);
+    }
+    if (strftime(runDirName, sizeof(runDirName), "Run_%Y-%m-%d_%H-%M-%S", tmp) == 0) {
+        fprintf(stderr, "strftime returned 0");
+        exit(EXIT_FAILURE);
+    }
+
+    snprintf(OUTDIR, sizeof(OUTDIR), "%s/%s", BASE_OUTDIR, runDirName);
+
+    //create the main directory
+    #ifdef _WIN32
+    _mkdir(OUTDIR);
+    #else
+    mkdir(OUTDIR, 0755);
+    #endif
 
 
+    const char *subdirName = "object";
+    char DirPath[100];
+    //full path
+    snprintf(DirPath, sizeof(DirPath), "%s/%s", OUTDIR, subdirName);
+    //operating system specific functions to check if the directory exists and makeit
+    #ifdef _WIN32
+    struct _stat info;
+    if (_stat(DirPath, &info) != 0) {
+        _mkdir(DirPath);
+    }
+    #else
+    struct stat info;
+    if (stat(DirPath, &info) != 0) {
+        mkdir(DirPath, 0755);
+    }
+    #endif
+}
 

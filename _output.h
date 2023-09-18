@@ -10,9 +10,9 @@ double out_Tissue(){
     
     
     char filename2[100]; char filename3[100]; char filename4[100];
-    snprintf(filename2, sizeof(char) * 100, "./output/X_a%g_b%g_%d.txt", ALPHA, BETA, fcount);
-    snprintf(filename3, sizeof(char) * 100, "./output/Y_a%g_b%g_%d.txt", ALPHA, BETA, fcount);
-    snprintf(filename4, sizeof(char) * 100, "./output/Lx_a%g_b%g.txt", ALPHA, BETA);
+    snprintf(filename2, sizeof(char) * 100, "%s/object/X_a%g_b%g_%d.txt", OUTDIR, ALPHA, BETA, fcount);
+    snprintf(filename3, sizeof(char) * 100, "%s/object/Y_a%g_b%g_%d.txt", OUTDIR, ALPHA, BETA, fcount);
+    snprintf(filename4, sizeof(char) * 100, "%s/object/Lx_a%g_b%g.txt", OUTDIR, ALPHA, BETA);
     
     double *dxdy = new double[2];
     dxdy[0]=0; dxdy[1]=0;
