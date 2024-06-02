@@ -15,7 +15,7 @@ void set_initial_flat(int _Nc){
     perioXY[0] = _Nc*d0;
     Lx0=perioXY[0];
     perioXY[1] = 100;
-    printf("ALPHA=%g  BETA=%g\n", ALPHA, BETA);
+    //printf("ALPHA=%g  BETA=%g\n", ALPHA, BETA);
     
     double dx=0.1*d0, dy=0.5*perioXY[1];
     

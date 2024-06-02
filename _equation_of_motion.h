@@ -8,7 +8,7 @@ void calc_forces(){
     
     //CALC EDGE LENGTHS
     for(int i = 1; i <= Ne; i++){
-        if(LENGTH0==-1 && e_type[i]==2) LENGTH0 = edge_Length(i); // set resting spring length to something realistic
+        if(LENGTH0==-1 && e_type[i]==2) LENGTH0 = edge_Length(i); // set resting spring length to something realistic if not already set in main.c
         e_length[i]=edge_Length(i);
     }
     
@@ -74,7 +74,7 @@ double integration_step(int printout){
     //OUTPUT
     if(printout==true) printf("%g \t\t wA=%.20g \t\t wL=%.20g \t\t wH=%.20g \t\t w=%.20g \t\t %g\n", Time, wA, wL, wH, wA+wL+wH, max_move);
     //APPEND ENERGIES TO LINKED LIST
-    if(SAVE_ALL == true || Time >= TOTAL_TIME-dt) {
+    if(SAVE_ALL == 1 || Time >= TOTAL_TIME-dt) {
         OutputNode *newNode = (OutputNode *) malloc(sizeof(OutputNode));
         newNode->Time = Time;
         newNode->wA = wA;

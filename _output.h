@@ -10,9 +10,9 @@ double out_Tissue(){
     
     
     char filename2[100]; char filename3[100]; char filename4[100];
-    snprintf(filename2, sizeof(char) * 100, "%s/object/X_a%g_b%g_%d.txt", OUTDIR, ALPHA, BETA, fcount);
-    snprintf(filename3, sizeof(char) * 100, "%s/object/Y_a%g_b%g_%d.txt", OUTDIR, ALPHA, BETA, fcount);
-    snprintf(filename4, sizeof(char) * 100, "%s/object/Lx_a%g_b%g.txt", OUTDIR, ALPHA, BETA);
+    snprintf(filename2, sizeof(char) * 100, "%s/object/X_a%g_b%g_k%g_%d.txt", OUTDIR, ALPHA, BETA, K_SPRING, fcount);
+    snprintf(filename3, sizeof(char) * 100, "%s/object/Y_a%g_b%g_k%g_%d.txt", OUTDIR, ALPHA, BETA, K_SPRING, fcount);
+    snprintf(filename4, sizeof(char) * 100, "%s/object/Lx_a%g_b%g_k%g.txt", OUTDIR, ALPHA, BETA, K_SPRING);
     
     double *dxdy = new double[2];
     dxdy[0]=0; dxdy[1]=0;
@@ -72,7 +72,7 @@ void output_state(int printOrNot, double deltaTime){
         if(printOrNot==true) out_Tissue();
         time0+=deltaTime;
         //printf("%g  %d\n", Time, kount);
-        printProgress(Time/(1.*TOTAL_TIME));
+        //printProgress(Time/(1.*TOTAL_TIME)); stupid progress bar
     }
 }
 //****************************************************************************

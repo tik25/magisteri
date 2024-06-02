@@ -97,8 +97,8 @@ void allocate(){// allocate space
 //****************************************************************************
 void deallocate(){// Deallocate space
     
-    printProgress(Time/(1.*TOTAL_TIME));
-    printf("\n");
+    //printProgress(Time/(1.*TOTAL_TIME)); stupid progress bar
+    //printf("\n");
     
     int arrayMax=array_max+1;
 
