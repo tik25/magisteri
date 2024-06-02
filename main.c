@@ -1,8 +1,8 @@
 #include <cmath>
 //*******************PARAMETERS***************************
 //INPUT PARAMETERS
-double ALPHA=2.1; /*apical surface tension*/
-double BETA=0.6; /*basal surface tension*/
+double ALPHA=2.5; /*apical (upper) surface tension*/
+double BETA=0.6; /*basal (lower) surface tension*/
 double LENGTH0=1/sqrt(ALPHA+BETA); /*spring resting length*/
 double K_SPRING=0.05; /*apical spring coefficient*/
 double SINEAMP=5;  /*amplitude of the initial sine peak*/
@@ -10,35 +10,36 @@ int SAVE_ALL=false; /*save energy at every step or only last */
 const char *BASE_OUTDIR = "../../OutputData"; //base directory of the structure
 
 double DELTA_OUT_TIME=500; /*output frequency*/
-double COMPRESSION=-0.04; /*compression (<0) or extension (>0) in %*/
-double TOTAL_TIME=80000; /*total integration time*/
+double COMPRESSION=-0.001; /*compression (<0) or extension (>0) in %*/
+double TOTAL_TIME=100000; /*total integration time (default 80000)*/
 double COMPRESSION_TIME=50000.;
 
-int CELL_NUMBER=50; /*cell count*/
+int CELL_NUMBER=100; /*cell count*/
 double dt=0.001; /*time step*/
 double CELL_BULK_MODULUS=100; /*cell-area compressibility modulus*/
-int RANDOM_SEED=1; /*seed for random number generator*/
+int RANDOM_SEED=134; /*seed for random number generator*/
 double VERTEX_PERTURBATION=0.05; /*magnitude of the initial perturbation from a flat state*/
-
-
+char* EXP_COMMENT;
 //*******************DECLARATIONS*************************
 #include "_functions.h"
 //********************MAIN********************************
 int main(int argc, char *argv[]){
     //overwrite parameter values with commandline arguments
-    if(argc == 5) {
-        ALPHA = atof(argv[1]);
-        BETA = atof(argv[2]);
-        CELL_NUMBER = atoi(argv[3]);
-        COMPRESSION = atof(argv[4]);
-        printf("Values updated\n");
-    }
+    if(argc != 7) { std::cerr << "Error! Wrong number of input elements!" << std::endl; return -1; }
+    ALPHA = atof(argv[1]);
+    BETA = atof(argv[2]);
+    CELL_NUMBER = atoi(argv[3]);
+    COMPRESSION = atof(argv[4]);
+    K_SPRING = atof(argv[5]);
+    TOTAL_TIME = atof(argv[6]);
+    EXP_COMMENT = argv[7]; //coment za specific run saved in comment.txt
+    //printf("Values updated\n");
 
     clock_t start_time = clock();/*start the timer*/
 
     allocate(); /*allocates memory for arrays*/
     set_initial_flat(CELL_NUMBER); /*sets the initial cell configuration*/
-    flat_to_sine(SINEAMP); /*impose a sine like peak shape*/
+    //flat_to_sine(SINEAMP); /*impose a sine like peak shape*/
     perturb_vertex_positions(VERTEX_PERTURBATION); /*perturbs vertex positions*/
     //**************************************************
     directory_setup();
@@ -57,6 +58,8 @@ int main(int argc, char *argv[]){
 
     save_metadata();
 
+    save_comment();
+
     save_energies();
     //*************************endof******************************
 
@@ -67,7 +70,7 @@ int main(int argc, char *argv[]){
     double elapsed_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
     printf("Elapsed time: %.2f seconds\n", elapsed_time);
 
-    getchar(); // Wait for a key press
+    //getchar(); // Wait for a key press
 
     return 0;
 }

@@ -47,7 +47,7 @@ double e_Length_force(int i){
 //****************************************************************************
 
 double e_Hook_force(int i){
-    double ddx,ddy;
+    double ddx,ddy; //vec{dd} je vektor od v2 do v1 (normalizacija njegova je v c0)
     double *dxdy = new double[2];
     dxdy[0]=0; dxdy[1]=0;
     int v1=e[i][1], v2=e[i][2];
@@ -57,16 +57,16 @@ double e_Hook_force(int i){
     delete []dxdy;
     
     double c0;
-    c0 = -2*K_SPRING*(e_length[i]-LENGTH0);
+    c0 = -K_SPRING*(e_length[i]-LENGTH0)/e_length[i]; //   /e_length[i]  normalizira direction vector (od gradienta pride) / ubistvu bi mogu ddx pa ddy normalizirat sam kle dodas isntead
     
     //v1
-    v_F[v1][1]+=-c0*ddx;
+    v_F[v1][1]+=-c0*ddx; //ko je (e_length[i]-LENGTH0) pozitivno vlece skup torej je predznak isti kot za povrsinski clen
     v_F[v1][2]+=-c0*ddy;
     
     //v2
     v_F[v2][1]+=c0*ddx;
     v_F[v2][2]+=c0*ddy;
     
-    return K_SPRING*pow(e_length[i]-LENGTH0,2);
+    return (K_SPRING/2)*pow(e_length[i]-LENGTH0,2);
 }
 

@@ -50,6 +50,18 @@ void save_metadata(){
     fclose(file);
 }
 
+void save_comment(){
+    // Check if the passed string is empty
+    if (EXP_COMMENT[0] == '\0') {
+        // Do not create or write to the file if the string is empty
+        return;
+    }
+    // Construct the file path for Comment.txt
+    sprintf(filePath, "%s/Comment.txt", OUTDIR);
+    FILE *file = fopen(filePath, "w");
+    fprintf(file, "%s\n", EXP_COMMENT);
+    fclose(file);
+}
 /**************************saving energies*****************************/
 void save_energies() {
     sprintf(filePath, "%s/energy.txt", OUTDIR);
