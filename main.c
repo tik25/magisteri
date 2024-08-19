@@ -27,7 +27,7 @@ char* WHERE;
 //********************MAIN********************************
 int main(int argc, char *argv[]){
     //overwrite parameter values with commandline arguments
-    if(argc != 8) { std::cerr << "Error! Wrong number of input elements!" << std::endl; return -1; }
+    if(argc != 9) { std::cerr << "Error! Wrong number of input elements!" << std::endl; return -1; }
     ALPHA = atof(argv[1]);
     BETA = atof(argv[2]);
     CELL_NUMBER = atoi(argv[3]);
@@ -58,7 +58,9 @@ int main(int argc, char *argv[]){
         if(Time<=COMPRESSION_TIME) compress(Lx0*(1.+COMPRESSION*Time/COMPRESSION_TIME)); /*compression ... the argument is the new total tissue length*/
     }
     output_final_state(true); /*true=outputs the final state*/
-    
+
+    output_final(true);/*dodatni outputi iz out.h novga*/
+    output_vertices_edges(true);
     /**************************do additional stuff for analy*******************************/
 
     //calculate midpoints and save them

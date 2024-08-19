@@ -39,10 +39,10 @@ double out_Tissue(){
             fprintf(file3, "%g ", v[vert_id][2] + dxdy[1]);
         }
             
-        for(int j = cell_edges[i][2]; j <= 15; j++){
-            fprintf(file2, "0 ");
-            fprintf(file3, "0 ");
-        }
+        //for(int j = cell_edges[i][2]; j <= 15; j++){  nek zero padding, najbrz zrd mathematice?
+        //    fprintf(file2, "0 ");
+        //    fprintf(file3, "0 ");
+        //}
             
         fprintf(file2, "\n");
         fprintf(file3, "\n");
@@ -80,3 +80,59 @@ void output_final_state(int printOrNot){
     if(printOrNot==true) out_Tissue();
 }
 //****************************************************************************
+
+
+//*********************NOVO DODATNO
+
+void output_final(int PrintOrNot){
+    char filename2[100];
+    snprintf(filename2, sizeof(char) * 200, "%s/object/X_Y_a%g_b%g_k%g.txt", OUTDIR, ALPHA, BETA, K_SPRING);
+    FILE *file2; file2 = fopen(filename2, "wt");
+    if(PrintOrNot==true){
+        int N_vertex = 2*CELL_NUMBER + 2;
+
+        for(int k=0; k<N_vertex; k++){
+            fprintf(file2, "%d %f %f \n", v_type[k], v[k][1], v[k][2]);
+        }
+
+    }
+    fclose(file2);
+}
+//****************************************************************************
+
+
+//*****************************************************************************
+void output_vertices_edges(int PrintOrNot){
+    int count=kount;
+    if(PrintOrNot == true){
+        char filename[100];
+        char filename1[100];
+        char filename2[100];
+        snprintf(filename, sizeof(char)*200, "%s/object/v_a%g_b%g_k%g_%d.txt", OUTDIR, ALPHA, BETA, K_SPRING, count);
+        snprintf(filename1, sizeof(char)*200, "%s/object/e_a%g_b%g_k%g_%d.txt", OUTDIR, ALPHA, BETA, K_SPRING, count);
+        snprintf(filename2, sizeof(char)*200, "%s/object/cell_v_a%g_b%g_k%g_%d.txt", OUTDIR, ALPHA, BETA, K_SPRING, count);
+        FILE *file; file = fopen(filename, "wt");
+        FILE *file1; file1 = fopen(filename1, "wt");
+        FILE *file2; file2 = fopen(filename2, "wt");
+
+        int N_vertex = 2*CELL_NUMBER + 2;
+        int N_edges = 3*CELL_NUMBER + 1;
+
+        for(int k=0; k<N_vertex; k++){
+            fprintf(file, "%d %f %f \n", int(v[k][0]), v[k][1], v[k][2]);}
+        fclose(file);
+
+        for(int j = 0; j< N_edges; j++){
+            fprintf(file1, "%d %d %d %d \n", e[j][0], e[j][1], e[j][2], e_type[j]);
+
+        }
+        fclose(file1);
+
+        for(int j = 1; j<= CELL_NUMBER; j++){
+            fprintf(file2, "%d %d %d %d %d %d\n", cell_vertices[j][1], cell_vertices[j][2], cell_vertices[j][3], cell_vertices[j][4], cell_vertices[j][5], cell_vertices[j][6]);
+
+        }
+        fclose(file2);
+
+    }
+}
