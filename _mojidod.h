@@ -46,6 +46,7 @@ void save_metadata(){
     fprintf(file, "TOTAL_TIME,%f\n", TOTAL_TIME);
     fprintf(file, "COMPRESSION_TIME,%f\n", COMPRESSION_TIME);
     fprintf(file, "CELL_NUMBER,%d\n", CELL_NUMBER);
+    fprintf(file, "RANDOM_SEED,%d\n", RANDOM_SEED);
 
     fclose(file);
 }

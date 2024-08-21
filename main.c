@@ -17,7 +17,7 @@ const char *BASE_OUTDIR; //base directory of the structure
 int CELL_NUMBER=100; /*cell count*/
 double dt=0.001; /*time step*/
 double CELL_BULK_MODULUS=100; /*cell-area compressibility modulus*/
-int RANDOM_SEED=134; /*seed for random number generator*/
+int RANDOM_SEED=124; /*seed for random number generator*/
 double VERTEX_PERTURBATION=0.05; /*magnitude of the initial perturbation from a flat state*/
 char* EXP_COMMENT;
 char* WHERE;
