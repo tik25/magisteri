@@ -95,12 +95,12 @@ void directory_setup(){
         perror("localtime");
         exit(EXIT_FAILURE);
     }
-    if (strftime(runDirName, sizeof(runDirName), "Run_%Y-%m-%d_%H-%M-%S", tmp) == 0) {
+    if (strftime(runDirName, sizeof(runDirName), "Run_%Y-%m-%d_%H", tmp) == 0) {
         fprintf(stderr, "strftime returned 0");
         exit(EXIT_FAILURE);
     }
 
-    snprintf(OUTDIR, sizeof(OUTDIR), "%s/%s", BASE_OUTDIR, runDirName);
+    snprintf(OUTDIR, sizeof(OUTDIR), "%s/%s_%d", BASE_OUTDIR, runDirName, RUN_INDEX);
 
     //create the main directory
     #ifdef _WIN32

@@ -21,13 +21,14 @@ int RANDOM_SEED=124; /*seed for random number generator*/
 double VERTEX_PERTURBATION=0.05; /*magnitude of the initial perturbation from a flat state*/
 char* EXP_COMMENT;
 char* WHERE;
+int RUN_INDEX; //identifier for folder name
 
 //*******************DECLARATIONS*************************
 #include "_functions.h"
 //********************MAIN********************************
 int main(int argc, char *argv[]){
     //overwrite parameter values with commandline arguments
-    if(argc != 9) { std::cerr << "Error! Wrong number of input elements!" << std::endl; return -1; }
+    if(argc != 10) { std::cerr << "Error! Wrong number of input elements!" << std::endl; return -1; }
     ALPHA = atof(argv[1]);
     BETA = atof(argv[2]);
     CELL_NUMBER = atoi(argv[3]);
@@ -36,6 +37,7 @@ int main(int argc, char *argv[]){
     TOTAL_TIME = atof(argv[6]);
     WHERE  = argv[7]; // "home" / "ijs"
     EXP_COMMENT = argv[8]; //coment za specific run saved in comment.txt
+    RUN_INDEX = atoi(argv[9]);
     //printf("Values updated\n");
 
     //get directory of the structure
